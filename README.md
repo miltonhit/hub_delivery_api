@@ -2,9 +2,9 @@
 This API manages users, orders and other things of a food delivery.
 
 ## Stack
--> Node16+ with NestJs
--> Lambda with DynamoDB and Api Gateway
--> Serverless framework
+-> Node16+ with NestJs<br />
+-> Lambda with DynamoDB and Api Gateway<br />
+-> Serverless framework<br />
 
 ## To run locally
 Run those commands in the terminal:
