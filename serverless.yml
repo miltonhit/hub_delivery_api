@@ -4,17 +4,31 @@ provider:
   name: aws
   runtime: nodejs16.x
   region: us-east-1
+  apiName: ${self:service}-${self:custom.stage}
+
+  stackTags:
+    service: ${self:service}
+    stage:   ${self:custom.stage}
+    product: ${self:custom.product}
+
+  environment:
+    stage: ${self:custom.stage}
+    region: ${aws:region} 
+    service: ${self:service}
 
 plugins:
+  - serverless-plugin-resource-tagging
   - serverless-dynamodb-local
   - serverless-offline
 
 custom:
-  stage: dev
-  
+  stage: ${sls:stage}
+  product: delivery
+
   dynamodb:
     stages:
       - dev
+      - prd
 
 package:
   exclude:
@@ -26,8 +40,9 @@ package:
     - README.md
 
 functions:
-  index:
+  app:
     handler: dist/index.handler
+    name: hub-delivery-api-${self:custom.stage}
     events:
     - http:
         cors: true
@@ -55,12 +70,18 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-          - AttributeName: cpf
-            KeyType: RANGE
         GlobalSecondaryIndexes:
-          - IndexName: gsiEmail
+          - IndexName: GsiEmail
             KeySchema:
             - AttributeName: email
+              KeyType: HASH
+            Projection:
+              NonKeyAttributes:
+                - id
+              ProjectionType: INCLUDE
+          - IndexName: GsiCpf
+            KeySchema:
+            - AttributeName: cpf
               KeyType: HASH
             Projection:
               NonKeyAttributes:

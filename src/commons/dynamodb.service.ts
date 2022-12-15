@@ -5,17 +5,15 @@ import { get } from 'env-var';
 
 @Injectable()
 export class DynamoDbService {
-  private client: DynamoDB;
-  public mapper: DataMapper;
+  client: DynamoDB;
+  mapper: DataMapper;
 
   constructor() {
     var region: string = "us-east-1";
     var endpoint: string = null;
+    var dbRunLocal = get("DB_RUN_LOCAL").asBool();
 
     if (get("DB_RUN_LOCAL").asBool()) {
-      console.log("DB_LOCAL: ON");
-      //
-      //
       region = "localhost";
       endpoint = "http://localhost:8000";
     }
@@ -24,6 +22,10 @@ export class DynamoDbService {
       region: region,
       endpoint: endpoint
     });
+
+    console.log("DB_LOCAL:", dbRunLocal);
+    var client: any = this.client;
+    this.mapper = new DataMapper({client});
   }
 
   async put(params: any): Promise<any> {
@@ -53,9 +55,6 @@ export class DynamoDbService {
       indexName?: string;
     }
   ): Promise<QueryIterator<typeof entity>> {
-    console.log(entity);
-    console.log(query);
-    
     return await this.mapper.query(entity, query, options);
   }
 

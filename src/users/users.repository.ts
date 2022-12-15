@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { DynamoDbService } from "src/commons/dynamodb.service";
 import { User } from "./entities/user.entity";
+import {between} from '@aws/dynamodb-expressions';
+import { userInfo } from "os";
+import { ItemNotFoundException } from "@aws/dynamodb-data-mapper";
 
 @Injectable()
 export class UsersRepository {
@@ -8,48 +11,62 @@ export class UsersRepository {
   constructor(private ddb: DynamoDbService) {
   }
 
-  async getById(search: string) {
-    const keyCondition = {
-      partitionKey: 'foo'
-    };
-
-    const iterator = await this.ddb.query(User, {
-      id: search
-    });
-
-    console.log(iterator.count);
-    console.log(iterator);
-    console.log(search);
-
-    // const record: User = await this.ddb.get(
-    //   Object.assign(new User(), {
-    //     id: search,
-    //     cpf: "39824060804"
-    //   })
-    // );
-
-
-    return null;
+  async getById(search: string): Promise<User> {
+    var user: User = null;
+    
+    try {
+      user = await this.ddb.get(new User({
+        id: search
+      }));
+    } catch(e ) {
+      if (!(e instanceof ItemNotFoundException)) {
+        throw e;
+      } 
+    }
+    
+    return user;
   }
 
-  async getByEmail(search: String): Promise<User> {
-    return null;
+  async getByEmail(search: String, completeObj?: boolean): Promise<User> {
+    var user: User = null;
+
+    for await (const currUser of this.ddb.mapper.query(
+      User,
+      { email: search },
+      { indexName: "GsiEmail", limit: 1 })) 
+    {
+      user = completeObj ? await this.getById(currUser.id) : currUser;
+    }
+
+    return user;
   }
 
-  async getByCpf(search: String): Promise<User> {
-    return null;
+  async getByCpf(search: String,completeObj?: boolean): Promise<User> {
+    var user: User = null;
+
+    for await (const currUser of this.ddb.mapper.query(
+      User,
+      { cpf: search },
+      { indexName: "GsiCpf", limit: 1 })) 
+    {
+      user = completeObj ? await this.getById(currUser.id) : currUser;
+    }
+
+    return user;
   }
 
-  create(obj: User) {
+  create(obj: User): User {
     this.ddb.put(obj);
-    console.log("CRIADO");
+    return obj;
   }
 
-  update(obj: User) {
-
+  update(obj: User): User {
+    this.ddb.update(obj);
+    return obj;
   }
 
-  remove(obj: User) {
-
+  remove(obj: User): User {
+    this.ddb.delete(obj);
+    return obj;
   }
 }

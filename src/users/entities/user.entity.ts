@@ -5,6 +5,7 @@ import {
   hashKey,
   rangeKey
 } from "@aws/dynamodb-data-mapper-annotations";
+import { Address } from "./address.entity";
 
 @table(`hub-users-${process.env.STAGE}`)
 export class User {
@@ -21,6 +22,7 @@ export class User {
   password?: string;
   nome?: string;
   celular?: string;
+  adresses: Address[];
   createdAt?: Date;
   updatedAt?: Date;
 }
