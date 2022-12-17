@@ -13,7 +13,7 @@ export class DynamoDbService {
     var endpoint: string = null;
     var dbRunLocal = get("DB_RUN_LOCAL").asBool();
 
-    if (get("DB_RUN_LOCAL").asBool()) {
+    if (dbRunLocal) {
       region = "localhost";
       endpoint = "http://localhost:8000";
     }

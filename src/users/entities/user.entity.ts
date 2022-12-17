@@ -7,7 +7,8 @@ import {
 } from "@aws/dynamodb-data-mapper-annotations";
 import { Address } from "./address.entity";
 
-@table(`hub-users-${process.env.STAGE}`)
+//@table(`hub-users-${process.env.DB_TABLE_SUFFIX}`)
+@table('hub-users-dev')
 export class User {
   public constructor(init?:Partial<User>) {
     Object.assign(this, init);
@@ -15,11 +16,13 @@ export class User {
 
   @hashKey()
   id: string;
-  @rangeKey()
+  @attribute()
   cpf: string;
   @attribute()
   email: string;
-  password?: string;
+  @attribute()
+  password: string;
+
   nome?: string;
   celular?: string;
   adresses: Address[];

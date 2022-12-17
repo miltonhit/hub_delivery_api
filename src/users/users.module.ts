@@ -7,6 +7,7 @@ import { CommonsModule } from 'src/commons/commons.module';
 @Module({
   imports: [CommonsModule],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository]
+  providers: [UsersService, UsersRepository],
+  exports: [UsersService]
 })
 export class UsersModule {}

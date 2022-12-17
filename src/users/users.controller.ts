@@ -1,38 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, Request, Param, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { JwtAuthGuard } from 'src/auth/strategies/jwt-auth.guard';
+import { UpdateEmailDto } from './dto/update-email.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @Put()
+  create(@Body() dto: CreateUserDto) {
+    return this.usersService.create(dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  get(@Request() req) {
+    return this.usersService.getById(req.user.id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') search: string) {
-    return this.usersService.getById(search);
+  @UseGuards(JwtAuthGuard)
+  @Post('/password')
+  changePassword(@Request() req, @Body() dto: UpdatePasswordDto) {
+    return this.usersService.changePassword(req.user.id, dto);
   }
 
-  @Get('/email/:email')
-  findByEmail(@Param('email') search: string) {
-    return this.usersService.getByEmail(search);
-  }
-
-  @Get('/cpf/:cpf')
-  findByCpf(@Param('cpf') search: string) {
-    return this.usersService.getByCpf(search);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Post('/email')
+  changeEmail(@Request() req, @Body() dto: UpdateEmailDto) {
+    return this.usersService.changeEmail(req.user.id, dto);
   }
 }

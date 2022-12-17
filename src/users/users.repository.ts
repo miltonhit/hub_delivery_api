@@ -55,18 +55,19 @@ export class UsersRepository {
     return user;
   }
 
-  create(obj: User): User {
-    this.ddb.put(obj);
+  async create(obj: User): Promise<User> {
+    await this.ddb.put(obj);
+    obj.password = null;
     return obj;
   }
 
-  update(obj: User): User {
-    this.ddb.update(obj);
+  async update(obj: User): Promise<User> {
+    await this.ddb.update(obj);
     return obj;
   }
 
-  remove(obj: User): User {
-    this.ddb.delete(obj);
+  async remove(obj: User): Promise<User> {
+    await this.ddb.delete(obj);
     return obj;
   }
 }

@@ -10,7 +10,8 @@ export class AppService {
       startedAt: this.startedAt,
       name: "hub_delivery_api",
       env: process.env.STAGE,
-      debugDb: process.env.DB_RUN_LOCAL
+      debugDb: process.env.DB_RUN_LOCAL,
+      suffixDb: process.env.DB_TABLE_SUFFIX
     }
   }
 }
