@@ -17,5 +17,10 @@ export enum ErrorsType {
 
 export const ErrorsConst = {
   alreadyExists: new ErrorDef({code: 1, description: "alreadyExists", type: ErrorsType.LOGIC}),
-  invalidInput: new ErrorDef({code: 2, description: "invalidInput", type: ErrorsType.LOGIC})
+  invalidInput: new ErrorDef({code: 2, description: "invalidInput", type: ErrorsType.LOGIC}),
+  notAllowed: new ErrorDef({code: 3, description: "notAllowed", type: ErrorsType.LOGIC}),
+  resourceNotFound: new ErrorDef({code: 4, description: "resourceNotFound", type: ErrorsType.LOGIC}),
+
+
+
 }

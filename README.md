@@ -14,5 +14,8 @@ Run those commands in the terminal:
 4. curl http://localhost:8000/service/status
 
 ## To deploy (aws provider)
-1. Install serverless framework ([Click here] (https://www.serverless.com/framework/docs/getting-started))
+1. Install [serverless framework](https://github.com/nestjs/typescript-starter)
 2. run this command: serverless deploy
+
+## Postman Documentation
+[Version 0.0.1](https://documenter.getpostman.com/view/1334597/2s8YzZNe9C)

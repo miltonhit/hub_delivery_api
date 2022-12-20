@@ -4,14 +4,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { PlacesModule } from './places/places.module';
 
 const STAGE = process.env.STAGE;
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: `${process.cwd()}/config/env/${process.env.STAGE}.env` }),
+    ConfigModule.forRoot({ envFilePath: `${process.cwd()}/config/env/${process.env.stage}.env` }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    PlacesModule
   ],
   controllers: [AppController],
   providers: [AppService]

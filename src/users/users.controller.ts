@@ -14,6 +14,11 @@ export class UsersController {
     return this.usersService.create(dto);
   }
 
+  @Get('/id/:id')
+  getById(@Param('id') id: string) {
+    return this.usersService.getById(id);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get()
   get(@Request() req) {
@@ -31,4 +36,6 @@ export class UsersController {
   changeEmail(@Request() req, @Body() dto: UpdateEmailDto) {
     return this.usersService.changeEmail(req.user.id, dto);
   }
+
+
 }

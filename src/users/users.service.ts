@@ -49,7 +49,7 @@ export class UsersService {
   async getById(search: string, withPass?: boolean): Promise<User> {
     var user: User = await this.repository.getById(search);
 
-    if (!withPass)
+    if (user != null && !withPass)
       user.password = null;
 
     return user;

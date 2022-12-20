@@ -9,7 +9,7 @@ export class AppService {
     return {
       startedAt: this.startedAt,
       name: "hub_delivery_api",
-      env: process.env.STAGE,
+      env: process.env.stage,
       debugDb: process.env.DB_RUN_LOCAL,
       suffixDb: process.env.DB_TABLE_SUFFIX
     }

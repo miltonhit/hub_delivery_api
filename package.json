@@ -9,9 +9,9 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "STAGE=local nest start --watch",
-    "start:debug": "STAGE=local nest start --debug --watch",
-    "start:prod": "STAGE=prd node dist/main",
+    "start": "stage=local nest start --watch",
+    "start:debug": "stage=local nest start --debug --watch",
+    "start:prod": "stage=prd node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -23,7 +23,6 @@
     "deploy:prd": "nest build && serverless deploy --aws-profile hubia-deploy --stage prd"
   },
   "dependencies": {
-    "@aws/dynamodb-data-mapper": "^0.7.3",
     "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",

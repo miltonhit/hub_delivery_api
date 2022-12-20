@@ -1,8 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { DynamoDbService } from "src/commons/dynamodb.service";
 import { User } from "./entities/user.entity";
-import {between} from '@aws/dynamodb-expressions';
-import { userInfo } from "os";
 import { ItemNotFoundException } from "@aws/dynamodb-data-mapper";
 
 @Injectable()
@@ -19,7 +17,7 @@ export class UsersRepository {
         id: search
       }));
     } catch(e ) {
-      if (!(e instanceof ItemNotFoundException)) {
+      if (e.name != "ItemNotFoundException") {
         throw e;
       } 
     }

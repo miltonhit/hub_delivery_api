@@ -6,6 +6,26 @@ provider:
   region: us-east-1
   apiName: ${self:service}-${self:custom.stage}
 
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/hub-users-${self:custom.stage}"
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/hub-places-${self:custom.stage}"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+      Resource: 
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/hub-users-${self:custom.stage}/index/*"
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/hub-places-${self:custom.stage}/index/*"
+
   stackTags:
     service: ${self:service}
     stage:   ${self:custom.stage}
@@ -87,3 +107,31 @@ resources:
               NonKeyAttributes:
                 - id
               ProjectionType: INCLUDE
+
+    PlacesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: hub-places-${self:custom.stage}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: GsiOwner
+            KeySchema:
+            - AttributeName: ownerId
+              KeyType: HASH
+            Projection:
+              NonKeyAttributes:
+                - id
+              ProjectionType: INCLUDE
+
+    S3:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-${self:custom.stage}
