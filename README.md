@@ -1,9 +1,10 @@
 ## hub-delivery-api
-This API manages users, orders and other things of a food delivery.
+This API manages users, orders and other things of a food delivery.<br>
+**UNDER CONSTRUCTION**
 
 ## Stack
--> Node16+ with NestJs<br />
--> Lambda with DynamoDB and Api Gateway<br />
+-> Node16+ with [NestJs](https://nestjs.com/)<br />
+-> [Lambda](https://aws.amazon.com/lambda/) with [DynamoDB](https://aws.amazon.com/dynamodb/) and [Api Gateway](https://aws.amazon.com/api-gateway/)<br />
 -> Serverless framework<br />
 
 ## To run locally
